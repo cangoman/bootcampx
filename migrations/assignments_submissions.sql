@@ -1,7 +1,7 @@
 CREATE TABLE assignments (
   id SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(255),
-  content VARCHAR(255),
+  content VARCHAR(511),
   day INTEGER,
   chapter INTEGER,
   duration INTEGER

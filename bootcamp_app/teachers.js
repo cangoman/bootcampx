@@ -10,15 +10,17 @@ const pool = new Pool( {
 
 
 pool.query(`
-SELECT students.id as id, students.name as name, cohorts.name as cohort
-FROM students
+SELECT DISTINCT teachers.name as teacher, cohorts.name as cohort
+FROM assistance_requests
+JOIN students ON student_id = students.id
 JOIN cohorts ON cohort_id = cohorts.id
-WHERE cohorts.name LIKE '${process.argv[2]}%'
-LIMIT ${process.argv[3] || 5};
+JOIN teachers ON teacher_id = teachers.id
+WHERE cohorts.name = '${process.argv[2]}'
+ORDER BY teacher;
 `)
 .then(res => {
   res.rows.forEach(user => {
-    console.log(`${user.name} has an id of ${user.id} and was in the ${user.cohort} cohort`);
+    console.log(`${user.cohort}: ${user.teacher}`);
   });
 })
 .catch(err => console.error('query error', err.stack));
